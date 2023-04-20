@@ -1,0 +1,68 @@
+#include "music.cpp"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+
+void addMultipleTracks(TrackLibrary &library, const std::string &filename)
+{
+    std::ifstream source_file;
+    source_file.open(filename);
+    if (!source_file) {
+        std::cout << "Error: Couldn't open source file.\n";
+    }
+
+    std::string line;
+    int lineCount;
+    while (std::getline(source_file, line))
+    {
+        ++lineCount;
+        std::istringstream iss(line);
+        std::string title, artist;
+        int duration;
+        if (!(std::getline(iss, title, '\t') && std::getline(iss, artist, '\t') && (iss >> duration))) {
+            std::cout << "Error: Invalid input on line " << lineCount << std::endl;
+        } else {
+	  AudioTrack track(title, artist, "", 0, duration);
+	  library.addTrack(track);
+            std::cout << "Files successfully loaded";
+        }
+    }
+}
+
+int main() {
+    TrackLibrary library;
+
+    char option;
+    do {
+        std::cout << "Options:\n"
+                  << "  (p)lay\n"
+                  << "  (s)top\n"
+                  << "  (n)ext\n"
+                  << "  (r)emove\n"
+                  << "  (q)uit\n"
+                  << "Enter your option: ";
+        std::cin >> option;
+
+        if (option == 'p') {
+        } else if (option == 's') {
+        } else if (option == 'n') {
+        } else if (option == 'r') {
+            std::string title;
+            std::cout << "Enter the title of the track to remove: ";
+            std::cin.ignore();
+            std::getline(std::cin, title);
+
+            if (library.removeTrackByTitle(title)) {
+                std::cout << "Track removed.\n";
+            } else {
+                std::cout << "Track not found.\n";
+            }
+        } else if (option != 'q') {
+            std::cout << "Invalid option, please try again.\n";
+        }
+    } while (option != 'q');
+
+    std::cout << "Exiting...\n";
+    return 0;
+}
