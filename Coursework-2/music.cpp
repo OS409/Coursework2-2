@@ -4,46 +4,31 @@
 #include <list>
 #include <set>
 #include <algorithm>
+#include <fstream>
+#include <sstream>
+#include "music.h"
 
-class AudioTrack {
-public:
-    AudioTrack(const std::string& title, const std::string& artist, const std::string& album, int track_number, int duration)
-        : title_(title), artist_(artist), album_(album), track_number_(track_number), duration_(duration) {}
 
-    const std::string& getTitle() const { return title_; }
-    const std::string& getArtist() const { return artist_; }
-    const std::string& getAlbum() const { return album_; }
-    int getTrackNumber() const { return track_number_; }
-    int getDuration() const { return duration_; }
+AudioTrack::AudioTrack(const std::string& title, const std::string& artist, int duration) {
+  this->title = title;
+  this->artist = artist;
+  this->duration = duration;
+}
 
-    void setTitle(const std::string& title) { title_ = title; }
-    void setArtist(const std::string& artist) { artist_ = artist; }
-    void setAlbum(const std::string& album) { album_ = album; }
-    void setTrackNumber(int track_number) { track_number_ = track_number; }
-    void setDuration(int duration) { duration_ = duration; }
+const std::string& AudioTrack::getTitle() const { return title; }
+const std::string& AudioTrack::getArtist() const { return artist; }
+int AudioTrack::getDuration() const { return duration; }
 
-private:
-    std::string title_;
-    std::string artist_;
-    std::string album_;
-    int track_number_;
-    int duration_; // Duration in seconds
-};
+void AudioTrack::setTitle(const std::string& title) { this->title = title; }
+void AudioTrack::setArtist(const std::string& artist) { this->artist = artist; }
+void AudioTrack::setDuration(int duration) { this->duration = duration; }
 
-class TrackNode {
-public:
-    // Constructor that initializes the TrackNode with an AudioTrack
-    explicit TrackNode(const AudioTrack& track) : track_(track) {}
+// Constructor that initializes the TrackNode with an AudioTrack
+TrackNode::TrackNode(const AudioTrack& track) : track(track) {}
 
-    // Getter for the AudioTrack held by this TrackNode
-    const AudioTrack& getTrack() const { return track_; }
+const AudioTrack& TrackNode::getTrack() const { return track; }
 
-    // Overloading the '<' operator to compare TrackNode objects based on the title of their AudioTracks
-    bool operator<(const TrackNode& other) const { return track_.getTitle() < other.track_.getTitle(); }
-
-private:
-    AudioTrack track_; // Holds the AudioTrack object
-};
+bool TrackNode::operator<(const TrackNode& other) const { return track.getTitle() < other.track.getTitle(); }
 
 class TrackLibrary {
 public:
